@@ -20,11 +20,13 @@ namespace MyClassesTest
         public void TestInitialize()
             // executa antes do teste iniciar(ou na inicialização)
         {
-            if (TestContext.TestName == "FileNameDoesExists")
+            if (TestContext.TestName.StartsWith("FileNameDoesExists"))
             {
-                if(!string.IsNullOrEmpty(_GoodFilename))
+                SetGoodFileName();
+
+                if (!string.IsNullOrEmpty(_GoodFilename))
                 {
-                    SetGoodFileName();
+                 
                     TestContext.WriteLine($"Creating File: {_GoodFilename}");
                     File.AppendAllText(_GoodFilename, "Some Text");
                 }
@@ -35,7 +37,7 @@ namespace MyClassesTest
         public void TestCleanup()
             // executa depois que o teste é finalizado
         {
-            if (TestContext.TestName == "FileNameDoesExists")
+            if (TestContext.TestName.StartsWith("FileNameDoesExists"))
             {
                 if (!string.IsNullOrEmpty(_GoodFilename))
                 {
@@ -64,6 +66,39 @@ namespace MyClassesTest
 
             Assert.IsTrue(fromCall);
         }
+
+        [TestMethod]
+
+        public void FileNameDoesExistsSimpleMessage()
+        {
+            FileProcess fp = new FileProcess();
+            bool fromCall;
+
+
+            TestContext.WriteLine($"Testing File: {_GoodFilename}");
+            fromCall = fp.FileExists(_GoodFilename);
+
+
+            Assert.IsFalse(fromCall, "File Does NOT Exist.");
+            // mensagem de erro personalizada(neste caso, file does not exist)
+        }
+
+        [TestMethod]
+
+        public void FileNameDoesExistsMessageFormatting()
+        {
+            FileProcess fp = new FileProcess();
+            bool fromCall;
+
+
+            TestContext.WriteLine($"Testing File: {_GoodFilename}");
+            fromCall = fp.FileExists(_GoodFilename);
+
+
+            Assert.IsFalse(fromCall, "File '{0}' Does NOT Exist.", _GoodFilename);
+            // mensagem de erro personalizada FORMATADA(neste caso, file does not exist, porem, com o caminho do arquivo ali no {0})
+        }
+
 
         public void SetGoodFileName()
         {
