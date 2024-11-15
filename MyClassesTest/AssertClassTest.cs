@@ -1,5 +1,6 @@
 ﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
 using MyClasses;
+using MyClasses.PersonClasses;
 using System;
 
 namespace MyClassesTest
@@ -68,6 +69,39 @@ namespace MyClassesTest
 
             Assert.AreNotSame(x, y);
             // verifica se não são o mesmo objeto(nesse caso, não são)
+        }
+
+        #endregion
+        #region IsInstaceOfType Test
+
+        [TestMethod]
+        [Owner("Raul")]
+        public void IsInstaceOfTypeTest()
+        {
+            PersonManager mgr = new PersonManager();
+            Person per;
+
+            per = mgr.CreatePerson("Raul", "Silveira", true);
+
+            Assert.IsInstanceOfType(per, typeof(Supervisor));
+            // verifica se é um supervisor ou nao(neste caso é, pois colocamos como true
+            // ali no createperson. se fosse false, seria instace of Employee(é só ver as classes
+            // dentro da PersonClasses)
+        }
+
+        [TestMethod]
+        [Owner("Raul")]
+        public void IsNullTest()
+        {
+            PersonManager mgr = new PersonManager();
+            Person per;
+
+            per = mgr.CreatePerson("", "Silveira", true);
+
+            Assert.IsNull(per);
+            // verifica se é nulo. neste caso, é, pois nao passamos o primeiro nome.
+            // logo, nao entra no if do PersonClasses onde verifica se é supervisor ou employee.
+            // apenas fica nulo mesmo.
         }
 
         #endregion
